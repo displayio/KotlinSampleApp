@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "MainActivity"
+        const val TAG = "MainActivity"
         const val PLACEMENT_ID = "placementId"
         const val AD_UNIT_NAME = "adUnitType"
         const val REQUEST_ID = "requestId"
