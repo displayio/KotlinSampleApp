@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">KotlinSampleApp</string>
+    <string name="interstitial">Interstitial</string>
+    <string name="infeed">Infeed</string>
+    <string name="rewarded_video">Rewarded video</string>
+    <string name="interscroller">Interscroller</string>
+    <string name="banner">Banner</string>
+    <string name="medium_rect">Medium rectangle</string>
+</resources>
