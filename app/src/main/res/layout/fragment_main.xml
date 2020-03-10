@@ -9,6 +9,7 @@
 
     <LinearLayout
         app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/button_container"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,6 +33,12 @@
             android:text="Show"/>
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/button_container"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

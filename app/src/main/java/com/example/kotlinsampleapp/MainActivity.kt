@@ -76,7 +76,6 @@ class MainActivity : AppCompatActivity() {
         const val TAG = "MainActivity"
         const val PLACEMENT_ID = "placementId"
         const val AD_UNIT_NAME = "adUnitType"
-        const val REQUEST_ID = "requestId"
         const val APP_ID = "6494"
     }
 }

@@ -3,4 +3,11 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="boxColor">#DEDFE0</color>
+    <color name="lineColor">#DEDFE0</color>
+    <color name="boldLineColor">#D5D5D5</color>
+
+    <color name="recyclerViewBackground">#49546B</color>
+    <color name="recyclerViewItemBackground">#19C5C3C3</color>
 </resources>

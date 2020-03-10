@@ -11,6 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.brandio.ads.*
 import com.brandio.ads.ads.Ad
 import com.brandio.ads.exceptions.DIOError
@@ -27,9 +29,9 @@ import com.example.kotlinsampleapp.R
 class AdUnitFragment : Fragment() {
 
     private var appId: String? = null
-    private var placementId: String? = null
+    private lateinit var placementId: String
     private var adUnitName: String? = null
-    private var requestId: String? = null
+    private lateinit var requestId: String
     private lateinit var loadedAd: Ad
     private lateinit var rootView: ViewGroup
     private lateinit var loadButton: Button
@@ -38,7 +40,7 @@ class AdUnitFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appId = arguments?.getString(APP_ID)
-        placementId = arguments?.getString(PLACEMENT_ID)
+        placementId = arguments?.getString(PLACEMENT_ID)!!
         adUnitName = arguments?.getString(AD_UNIT_NAME)
     }
 
@@ -140,16 +142,17 @@ class AdUnitFragment : Fragment() {
                 loadedAd.showAd(activity)
             }
 
-            AdUnitType.INFEED.name, AdUnitType.INTERSCROLLER.name -> {
+            AdUnitType.INFEED.name -> {
+                val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
+                recyclerView.layoutManager = LinearLayoutManager(activity)
+                recyclerView.adapter = InfeedRVAdapter(12, placementId, requestId )
+            }
 
-//                val intent = Intent(activity, LoadInfeedActivity::class.java)    //TODO
+            AdUnitType.INTERSCROLLER.name -> {
 
-
-
-//                intent.putExtra(PLACEMENT_ID, placementId)
-//                intent.putExtra(AD_UNIT_NAME, adUnitName)
-//                intent.putExtra(REQUEST_ID, requestId)
-//                startActivity(intent)
+                val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
+                recyclerView.layoutManager = LinearLayoutManager(activity)
+                recyclerView.adapter = InterScrollerRVAdapter(12, placementId, requestId )
             }
 
             AdUnitType.BANNER.name -> {
