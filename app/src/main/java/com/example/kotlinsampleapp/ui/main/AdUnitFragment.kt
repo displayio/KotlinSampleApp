@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,9 +23,12 @@ import com.example.kotlinsampleapp.AdUnitType
 import com.example.kotlinsampleapp.MainActivity
 import com.example.kotlinsampleapp.MainActivity.Companion.AD_UNIT_NAME
 import com.example.kotlinsampleapp.MainActivity.Companion.PLACEMENT_ID
+import com.example.kotlinsampleapp.MainActivity.Companion.AD_IS_DISPLAYING
+import com.example.kotlinsampleapp.MainActivity.Companion.REQUEST_ID
 import com.example.kotlinsampleapp.R
 
 class AdUnitFragment : Fragment() {
+
 
     private var appId: String? = null
     private lateinit var placementId: String
@@ -36,6 +38,8 @@ class AdUnitFragment : Fragment() {
     private lateinit var rootView: ViewGroup
     private lateinit var loadButton: Button
     private lateinit var showButton: Button
+
+    private var adIsDisplaying: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +70,22 @@ class AdUnitFragment : Fragment() {
                     showButton.isEnabled = it
                 })
         }
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(AD_IS_DISPLAYING, false)){
+                requestId = savedInstanceState.getString(REQUEST_ID).toString();
+                showAd()
+            }
+        }
         return rootView
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (adIsDisplaying) {
+            outState.putBoolean(AD_IS_DISPLAYING, adIsDisplaying)
+            outState.putString(REQUEST_ID, requestId)
+        }
+        super.onSaveInstanceState(outState)
     }
 
     private fun loadAd() {
@@ -116,9 +135,9 @@ class AdUnitFragment : Fragment() {
         adRequest.requestAd()
     }
 
-    private fun showAd(){
+    private fun showAd() {
         setupShowButton(false)
-
+        adIsDisplaying = true
         when (adUnitName) {
 
             AdUnitType.INTERSTITIAL.name, AdUnitType.REWARDED_VIDEO.name -> {
@@ -126,15 +145,20 @@ class AdUnitFragment : Fragment() {
                     override fun onShown(ad: Ad) {
                         Log.i(MainActivity.TAG, "onShown")
                     }
+
                     override fun onFailedToShow(ad: Ad) {
                         Log.i(MainActivity.TAG, "onFailedToShow")
                     }
+
                     override fun onClicked(ad: Ad) {
                         Log.i(MainActivity.TAG, "onClicked")
                     }
+
                     override fun onClosed(ad: Ad) {
+                        adIsDisplaying = false
                         Log.i(MainActivity.TAG, "onClosed")
                     }
+
                     override fun onAdCompleted(ad: Ad) {
                         Log.i(MainActivity.TAG, "onAdCompleted")
                     }
@@ -145,23 +169,27 @@ class AdUnitFragment : Fragment() {
             AdUnitType.INFEED.name -> {
                 val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
                 recyclerView.layoutManager = LinearLayoutManager(activity)
-                recyclerView.adapter = InfeedRVAdapter(12, placementId, requestId )
+                recyclerView.adapter = InfeedRVAdapter(12, placementId, requestId)
             }
 
             AdUnitType.INTERSCROLLER.name -> {
 
                 val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
                 recyclerView.layoutManager = LinearLayoutManager(activity)
-                recyclerView.adapter = InterScrollerRVAdapter(12, placementId, requestId )
+                recyclerView.adapter = InterScrollerRVAdapter(12, placementId, requestId)
             }
 
             AdUnitType.BANNER.name -> {
                 try {
-                    val bannerPlacement = Controller.getInstance().getPlacement(placementId) as BannerPlacement
+                    val bannerPlacement =
+                        Controller.getInstance().getPlacement(placementId) as BannerPlacement
                     val bannerView = bannerPlacement.getBanner(activity, requestId)
 
                     if (bannerView != null) {
-                        val param: ConstraintLayout.LayoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+                        val param: ConstraintLayout.LayoutParams = ConstraintLayout.LayoutParams(
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT
+                        )
                         param.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                         param.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
                         param.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
@@ -176,11 +204,15 @@ class AdUnitFragment : Fragment() {
 
             AdUnitType.MEDIUM_RECTANGLE.name -> {
                 try {
-                    val mRectPlacement = Controller.getInstance().getPlacement(placementId) as MediumRectanglePlacement
+                    val mRectPlacement = Controller.getInstance()
+                        .getPlacement(placementId) as MediumRectanglePlacement
                     val mRectView = mRectPlacement.getMediumRectangle(activity, requestId)
 
                     if (mRectView != null) {
-                        val param: ConstraintLayout.LayoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+                        val param: ConstraintLayout.LayoutParams = ConstraintLayout.LayoutParams(
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT
+                        )
                         param.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                         param.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
                         param.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
@@ -198,7 +230,9 @@ class AdUnitFragment : Fragment() {
 
     private fun setupShowButton(show: Boolean) {
         (activity as MainActivity).apply {
-            sdkInitModel.showEnabled.value = show
+            if (sdkInitModel != null) {
+                sdkInitModel.showEnabled.value = show
+            }
         }
     }
 

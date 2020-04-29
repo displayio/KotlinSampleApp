@@ -1,5 +1,6 @@
 package com.example.kotlinsampleapp
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
@@ -72,10 +73,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (Controller.getInstance().isInitialized) {
+            sdkInitModel.loadEnabled.value = true
+        }
+    }
+
     companion object {
         const val TAG = "MainActivity"
         const val PLACEMENT_ID = "placementId"
         const val AD_UNIT_NAME = "adUnitType"
         const val APP_ID = "6494"
+        const val AD_IS_DISPLAYING = "adIsDisplaying"
+        const val REQUEST_ID = "requestId"
     }
 }
