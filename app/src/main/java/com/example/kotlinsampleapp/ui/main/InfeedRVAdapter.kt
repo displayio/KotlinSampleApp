@@ -51,7 +51,7 @@ class InfeedRVAdapter(
     }
 
     override fun onBindViewHolder(@NonNull holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder.itemViewType === TYPE_AD && holder is AdViewHolder) {
+        if (holder.itemViewType == TYPE_AD && holder is AdViewHolder) {
             try {
                 val infeedPlacement =
                     Controller.getInstance().getPlacement(placementId) as InfeedPlacement

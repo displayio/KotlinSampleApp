@@ -138,31 +138,33 @@ class AdUnitFragment : Fragment() {
     private fun showAd() {
         setupShowButton(false)
         adIsDisplaying = true
+
+        loadedAd.setEventListener(object : AdEventListener {
+            override fun onShown(ad: Ad) {
+                Log.i(MainActivity.TAG, "onShown")
+            }
+
+            override fun onFailedToShow(ad: Ad) {
+                Log.i(MainActivity.TAG, "onFailedToShow")
+            }
+
+            override fun onClicked(ad: Ad) {
+                Log.i(MainActivity.TAG, "onClicked")
+            }
+
+            override fun onClosed(ad: Ad) {
+                adIsDisplaying = false
+                Log.i(MainActivity.TAG, "onClosed")
+            }
+
+            override fun onAdCompleted(ad: Ad) {
+                Log.i(MainActivity.TAG, "onAdCompleted")
+            }
+        })
+
         when (adUnitName) {
 
             AdUnitType.INTERSTITIAL.name, AdUnitType.REWARDED_VIDEO.name -> {
-                loadedAd.setEventListener(object : AdEventListener {
-                    override fun onShown(ad: Ad) {
-                        Log.i(MainActivity.TAG, "onShown")
-                    }
-
-                    override fun onFailedToShow(ad: Ad) {
-                        Log.i(MainActivity.TAG, "onFailedToShow")
-                    }
-
-                    override fun onClicked(ad: Ad) {
-                        Log.i(MainActivity.TAG, "onClicked")
-                    }
-
-                    override fun onClosed(ad: Ad) {
-                        adIsDisplaying = false
-                        Log.i(MainActivity.TAG, "onClosed")
-                    }
-
-                    override fun onAdCompleted(ad: Ad) {
-                        Log.i(MainActivity.TAG, "onAdCompleted")
-                    }
-                })
                 loadedAd.showAd(activity)
             }
 
@@ -170,6 +172,12 @@ class AdUnitFragment : Fragment() {
                 val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
                 recyclerView.layoutManager = LinearLayoutManager(activity)
                 recyclerView.adapter = InfeedRVAdapter(12, placementId, requestId)
+            }
+
+            AdUnitType.OUTSTREAM_VIDEO_SNAP.name, AdUnitType.OUTSTREAM_VIDEO_NO_SNAP.name -> {
+                val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
+                recyclerView.layoutManager = LinearLayoutManager(activity)
+                recyclerView.adapter = OutstreamVideoRVAdapter(12, placementId, requestId)
             }
 
             AdUnitType.INTERSCROLLER.name -> {

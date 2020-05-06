@@ -20,7 +20,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return AdUnitType.values()[position].value
+        return AdUnitType.values()[position].adUnitTitle
     }
 
     override fun getCount(): Int {
