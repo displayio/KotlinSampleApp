@@ -9,6 +9,8 @@ import com.brandio.ads.Controller
 import com.brandio.ads.InterscrollerPlacement
 import com.brandio.ads.containers.InterscrollerContainer
 import com.example.kotlinsampleapp.R
+import kotlin.properties.Delegates
+
 
 class InterScrollerRVAdapter(
     adPosition: Int,
@@ -17,6 +19,7 @@ class InterScrollerRVAdapter(
     private var items: ArrayList<Int?> = listOf(1..40).flatten() as ArrayList<Int?>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private var interScrollerHeight by Delegates.notNull<Int>()
     private val TAG = "InterScrollerRVAdapter"
     private val TYPE_AD = 0
     private val TYPE_CONTENT = 1

@@ -34,6 +34,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation 'com.brandio.ads:sdk:4.3.0'
+    implementation 'com.brandio.ads:sdk:4.3.1'
 
 }
