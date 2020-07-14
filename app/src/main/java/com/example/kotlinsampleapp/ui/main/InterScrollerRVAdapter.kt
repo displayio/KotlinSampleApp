@@ -16,7 +16,7 @@ class InterScrollerRVAdapter(
     adPosition: Int,
     private var placementId: String,
     private var requestId: String,
-    private var items: ArrayList<Int?> = listOf(1..40).flatten() as ArrayList<Int?>
+    private var items: ArrayList<Int?> =  (1..40).toList() as ArrayList<Int?>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var interScrollerHeight by Delegates.notNull<Int>()
