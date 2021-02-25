@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -38,6 +39,7 @@ class AdUnitFragment : Fragment() {
     private lateinit var rootView: ViewGroup
     private lateinit var loadButton: Button
     private lateinit var showButton: Button
+    private lateinit var recyclerView: RecyclerView
 
     private var adIsDisplaying: Boolean = false
 
@@ -55,6 +57,8 @@ class AdUnitFragment : Fragment() {
         rootView = inflater.inflate(R.layout.fragment_main, container, false) as ViewGroup
         loadButton = rootView.findViewById<Button>(R.id.load_button);
         showButton = rootView.findViewById<Button>(R.id.show_button);
+        recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
 
         loadButton.setOnClickListener { loadAd() }
         showButton.setOnClickListener { showAd() }
@@ -169,22 +173,16 @@ class AdUnitFragment : Fragment() {
             }
 
             AdUnitType.INFEED.name -> {
-                val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
-                recyclerView.layoutManager = LinearLayoutManager(activity)
                 recyclerView.adapter = InfeedRVAdapter(12, placementId, requestId)
             }
 
             AdUnitType.OUTSTREAM_VIDEO_SNAP.name, AdUnitType.OUTSTREAM_VIDEO_NO_SNAP.name -> {
-                val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
-                recyclerView.layoutManager = LinearLayoutManager(activity)
                 recyclerView.adapter = OutstreamVideoRVAdapter(12, placementId, requestId)
             }
 
             AdUnitType.INTERSCROLLER.name -> {
-
-                val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
-                recyclerView.layoutManager = LinearLayoutManager(activity)
-                recyclerView.adapter = InterScrollerRVAdapter(12, placementId, requestId)
+                val buttonContainerHeight = rootView.findViewById<LinearLayout>(R.id.button_container).height
+                recyclerView.adapter = InterScrollerRVAdapter(12, placementId, requestId, buttonContainerHeight)
             }
 
             AdUnitType.BANNER.name -> {

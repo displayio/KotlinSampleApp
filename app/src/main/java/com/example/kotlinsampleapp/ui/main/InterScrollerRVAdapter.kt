@@ -16,6 +16,7 @@ class InterScrollerRVAdapter(
     adPosition: Int,
     private var placementId: String,
     private var requestId: String,
+    private var adjustmentHeight: Int,
     private var items: ArrayList<Int?> =  (1..40).toList() as ArrayList<Int?>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -58,6 +59,7 @@ class InterScrollerRVAdapter(
                     Controller.getInstance().getPlacement(placementId) as InterscrollerPlacement
                 val container =
                     placement.getContainer(Controller.getInstance().context, requestId, position)
+                container.setInterscrollerHeight(holder.parent.height - adjustmentHeight)
                 container.bindTo(holder.itemView as ViewGroup, holder.parent)
             } catch (e: Exception) {
                 e.printStackTrace()
