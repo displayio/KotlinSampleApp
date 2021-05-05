@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brandio.ads.Controller
 import com.brandio.ads.InterscrollerPlacement
 import com.brandio.ads.containers.InterscrollerContainer
+import com.brandio.ads.exceptions.DioSdkException
 import com.example.kotlinsampleapp.R
 import kotlin.properties.Delegates
 
@@ -17,7 +18,7 @@ class InterScrollerRVAdapter(
     private var placementId: String,
     private var requestId: String,
     private var adjustmentHeight: Int,
-    private var items: ArrayList<Int?> =  (1..40).toList() as ArrayList<Int?>
+    private var items: ArrayList<Int?> = (1..40).toList() as ArrayList<Int?>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var interScrollerHeight by Delegates.notNull<Int>()
@@ -30,13 +31,24 @@ class InterScrollerRVAdapter(
     }
 
     @NonNull
-    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        @NonNull parent: ViewGroup,
+        viewType: Int
+    ): RecyclerView.ViewHolder {
 
         val context = parent.context.applicationContext
         if (viewType == TYPE_AD) {
             val adView: ViewGroup = InterscrollerContainer.getAdView(context)
             val adHolder = AdHolder(adView)
             adHolder.setParent(parent)
+            try {
+                val placement =
+                    Controller.getInstance().getPlacement(placementId) as InterscrollerPlacement
+                placement.parentRecyclerView = parent as RecyclerView
+            } catch (e: DioSdkException) {
+                e.printStackTrace()
+            }
+
             return adHolder
         }
         val view = LayoutInflater.from(parent.context)
@@ -60,7 +72,7 @@ class InterScrollerRVAdapter(
                 val container =
                     placement.getContainer(Controller.getInstance().context, requestId, position)
                 container.setInterscrollerHeight(holder.parent.height - adjustmentHeight)
-                container.bindTo(holder.itemView as ViewGroup, holder.parent)
+                container.bindTo(holder.itemView as ViewGroup)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
