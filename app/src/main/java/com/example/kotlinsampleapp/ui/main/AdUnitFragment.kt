@@ -176,8 +176,8 @@ class AdUnitFragment : Fragment() {
                 recyclerView.adapter = InfeedRVAdapter(12, placementId, requestId)
             }
 
-            AdUnitType.OUTSTREAM_VIDEO_SNAP.name, AdUnitType.OUTSTREAM_VIDEO_NO_SNAP.name -> {
-                recyclerView.adapter = OutstreamVideoRVAdapter(12, placementId, requestId)
+            AdUnitType.HEADLINE_VIDEO_SNAP.name, AdUnitType.HEADLINE_VIDEO_NO_SNAP.name -> {
+                recyclerView.adapter = HeadlineVideoRVAdapter(12, placementId, requestId)
             }
 
             AdUnitType.INTERSCROLLER.name -> {

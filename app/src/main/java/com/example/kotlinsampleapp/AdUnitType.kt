@@ -7,8 +7,8 @@ enum class AdUnitType {
     INTERSCROLLER("Interscroller", "6430"),
     BANNER("Banner", "6428"),
     MEDIUM_RECTANGLE("Medium rectangle", "6429"),
-    OUTSTREAM_VIDEO_SNAP("Outstream video Snap", "6735"),
-    OUTSTREAM_VIDEO_NO_SNAP("Outstream video NoSnap", "6955");
+    HEADLINE_VIDEO_SNAP("Headline video Snap", "6735"),
+    HEADLINE_VIDEO_NO_SNAP("Headline video NoSnap", "6955");
 
     val adUnitTitle: String
     val placementId: String

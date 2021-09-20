@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.brandio.ads.Controller
-import com.brandio.ads.OutStreamVideoPlacement
-import com.brandio.ads.containers.OutStreamVideoAdContainer
+import com.brandio.ads.HeadlineVideoPlacement
+import com.brandio.ads.containers.HeadlineVideoAdContainer
 import com.brandio.ads.exceptions.DioSdkException
-import com.brandio.ads.listeners.OutStreamVideoSnapListener
+import com.brandio.ads.listeners.HeadlineVideoSnapListener
 import com.example.kotlinsampleapp.R
 
 
-class OutstreamVideoRVAdapter(
+class HeadlineVideoRVAdapter(
     var adPosition: Int,
     private val placementId: String,
     private val requestId: String,
@@ -36,7 +36,7 @@ class OutstreamVideoRVAdapter(
         context = parent.context.applicationContext
         return when (viewType) {
             TYPE_AD -> AdViewHolder(
-                OutStreamVideoAdContainer.getAdView(context)
+                HeadlineVideoAdContainer.getAdView(context)
             )
             else -> {
                 val view: View = LayoutInflater.from(parent.context)
@@ -57,10 +57,10 @@ class OutstreamVideoRVAdapter(
     override fun onBindViewHolder(@NonNull holder: RecyclerView.ViewHolder, position: Int) {
         if (holder.itemViewType == TYPE_AD && holder is AdViewHolder) {
             try {
-                val outStreamVideoPlacement = Controller.getInstance()
-                    .getPlacement(placementId) as OutStreamVideoPlacement
+                val headlineVideoPlacement = Controller.getInstance()
+                    .getPlacement(placementId) as HeadlineVideoPlacement
                 val container =
-                    outStreamVideoPlacement.getOutStreamVideoContainer(context, requestId)
+                    headlineVideoPlacement.getHeadLineVideoContainer(context, requestId)
                 container.bindTo(holder.itemView as ViewGroup)
             } catch (e: DioSdkException) {
                 Log.e(
@@ -78,14 +78,14 @@ class OutstreamVideoRVAdapter(
         RecyclerView.ViewHolder(itemView!!)
 
     companion object {
-        private const val TAG = "OutStreamListAdapter"
+        private const val TAG = "HeadlineListAdapter"
         private const val TYPE_AD = 0
         private const val TYPE_CONTENT = 1
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        recyclerView.addOnScrollListener(object : OutStreamVideoSnapListener(adPosition) {
+        recyclerView.addOnScrollListener(object : HeadlineVideoSnapListener(adPosition) {
             override fun removeAdPositionFromList(adPosition: Int) {
                 items.removeAt(adPosition)
                 recyclerView.adapter!!.notifyDataSetChanged()
