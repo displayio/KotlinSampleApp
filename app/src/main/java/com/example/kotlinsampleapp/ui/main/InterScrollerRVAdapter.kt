@@ -72,6 +72,7 @@ class InterScrollerRVAdapter(
                 val container =
                     placement.getContainer(Controller.getInstance().context, requestId, position)
                 container.setInterscrollerHeight(holder.parent.height - adjustmentHeight)
+//                container.setInterscrollerOffset(adjustmentHeight)
                 container.bindTo(holder.itemView as ViewGroup)
             } catch (e: Exception) {
                 e.printStackTrace()
