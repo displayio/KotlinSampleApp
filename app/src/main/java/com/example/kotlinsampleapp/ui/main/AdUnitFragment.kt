@@ -143,7 +143,7 @@ class AdUnitFragment : Fragment() {
         setupShowButton(false)
         adIsDisplaying = true
 
-        loadedAd.setEventListener(object : AdEventListener {
+        loadedAd.setEventListener(object : AdEventListener() {
             override fun onShown(ad: Ad) {
                 Log.i(MainActivity.TAG, "onShown")
             }
@@ -168,7 +168,7 @@ class AdUnitFragment : Fragment() {
 
         when (adUnitName) {
 
-            AdUnitType.INTERSTITIAL.name, AdUnitType.REWARDED_VIDEO.name -> {
+            AdUnitType.INTERSTITIAL.name -> {
                 loadedAd.showAd(activity)
             }
 
