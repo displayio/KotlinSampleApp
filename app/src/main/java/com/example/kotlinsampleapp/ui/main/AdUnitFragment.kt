@@ -177,7 +177,7 @@ class AdUnitFragment : Fragment() {
             }
 
             AdUnitType.HEADLINE_VIDEO_SNAP.name, AdUnitType.HEADLINE_VIDEO_NO_SNAP.name -> {
-                recyclerView.adapter = HeadlineVideoRVAdapter(12, placementId, requestId)
+                recyclerView.adapter = HeadlineRVAdapter(12, placementId, requestId)
             }
 
             AdUnitType.INTERSCROLLER.name -> {

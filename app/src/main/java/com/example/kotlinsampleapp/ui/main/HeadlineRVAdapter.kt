@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.brandio.ads.Controller
-import com.brandio.ads.HeadlineVideoPlacement
-import com.brandio.ads.containers.HeadlineVideoAdContainer
+import com.brandio.ads.HeadlinePlacement
+import com.brandio.ads.containers.HeadlineAdContainer
 import com.brandio.ads.exceptions.DioSdkException
-import com.brandio.ads.listeners.HeadlineVideoSnapListener
+import com.brandio.ads.listeners.HeadlineSnapListener
 import com.example.kotlinsampleapp.R
 
 
-class HeadlineVideoRVAdapter(
+class HeadlineRVAdapter(
     var adPosition: Int,
     private val placementId: String,
     private val requestId: String,
@@ -36,7 +36,7 @@ class HeadlineVideoRVAdapter(
         context = parent.context.applicationContext
         return when (viewType) {
             TYPE_AD -> AdViewHolder(
-                HeadlineVideoAdContainer.getAdView(context)
+                HeadlineAdContainer.getAdView(context)
             )
             else -> {
                 val view: View = LayoutInflater.from(parent.context)
@@ -57,10 +57,10 @@ class HeadlineVideoRVAdapter(
     override fun onBindViewHolder(@NonNull holder: RecyclerView.ViewHolder, position: Int) {
         if (holder.itemViewType == TYPE_AD && holder is AdViewHolder) {
             try {
-                val headlineVideoPlacement = Controller.getInstance()
-                    .getPlacement(placementId) as HeadlineVideoPlacement
+                val headlinePlacement = Controller.getInstance()
+                    .getPlacement(placementId) as HeadlinePlacement
                 val container =
-                    headlineVideoPlacement.getHeadLineVideoContainer(context, requestId)
+                    headlinePlacement.getHeadLineContainer(context, requestId)
                 container.bindTo(holder.itemView as ViewGroup)
             } catch (e: DioSdkException) {
                 Log.e(
@@ -85,7 +85,7 @@ class HeadlineVideoRVAdapter(
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        recyclerView.addOnScrollListener(object : HeadlineVideoSnapListener(adPosition) {
+        recyclerView.addOnScrollListener(object : HeadlineSnapListener(adPosition) {
             override fun removeAdPositionFromList(adPosition: Int) {
                 items.removeAt(adPosition)
                 recyclerView.adapter!!.notifyDataSetChanged()
