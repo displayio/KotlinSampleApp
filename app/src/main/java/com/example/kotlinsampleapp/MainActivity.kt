@@ -2,7 +2,7 @@ package com.example.kotlinsampleapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.brandio.ads.Controller
 import com.brandio.ads.exceptions.DIOError
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
 
-        sdkInitModel = ViewModelProviders.of(this).get(SDKInitViewModel::class.java).apply {
+        sdkInitModel = ViewModelProvider(this).get(SDKInitViewModel::class.java).apply {
             loadEnabled.value = false
             showEnabled.value = false
         }

@@ -53,7 +53,7 @@ class AdUnitFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         rootView = inflater.inflate(R.layout.fragment_main, container, false) as ViewGroup
         loadButton = rootView.findViewById<Button>(R.id.load_button);
         showButton = rootView.findViewById<Button>(R.id.show_button);
@@ -93,8 +93,7 @@ class AdUnitFragment : Fragment() {
     }
 
     private fun loadAd() {
-        val placement: Placement
-        placement = try {
+        val placement: Placement = try {
             Controller.getInstance().getPlacement(placementId)
         } catch (e: DioSdkException) {
             Log.e(adUnitName, " ${e.localizedMessage}")
@@ -174,6 +173,10 @@ class AdUnitFragment : Fragment() {
 
             AdUnitType.INFEED.name -> {
                 recyclerView.adapter = InfeedRVAdapter(12, placementId, requestId)
+            }
+
+            AdUnitType.SHOPPABLE_VIDEO.name -> {
+                recyclerView.adapter = ShoppableRVAdapter(12, placementId, requestId)
             }
 
             AdUnitType.HEADLINE_VIDEO_SNAP.name, AdUnitType.HEADLINE_VIDEO_NO_SNAP.name -> {
