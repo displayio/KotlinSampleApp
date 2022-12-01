@@ -7,8 +7,7 @@ enum class AdUnitType {
     BANNER("Banner", "6428"),
     MEDIUM_RECTANGLE("Medium rectangle", "6429"),
     HEADLINE_VIDEO_SNAP("Headline video", "6735"),
-    HEADLINE_VIDEO_NO_SNAP("Headline display", "6955"),
-    SHOPPABLE_VIDEO("Shoppable video", "7928");
+    HEADLINE_VIDEO_NO_SNAP("Headline display", "6955");
 
     val adUnitTitle: String
     val placementId: String

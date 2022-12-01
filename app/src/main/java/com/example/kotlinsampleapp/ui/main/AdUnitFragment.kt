@@ -175,10 +175,6 @@ class AdUnitFragment : Fragment() {
                 recyclerView.adapter = InfeedRVAdapter(12, placementId, requestId)
             }
 
-            AdUnitType.SHOPPABLE_VIDEO.name -> {
-                recyclerView.adapter = ShoppableRVAdapter(12, placementId, requestId)
-            }
-
             AdUnitType.HEADLINE_VIDEO_SNAP.name, AdUnitType.HEADLINE_VIDEO_NO_SNAP.name -> {
                 recyclerView.adapter = HeadlineRVAdapter(12, placementId, requestId)
             }
