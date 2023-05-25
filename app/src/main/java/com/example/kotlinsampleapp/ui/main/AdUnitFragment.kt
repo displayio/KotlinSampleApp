@@ -235,9 +235,7 @@ class AdUnitFragment : Fragment() {
 
     private fun setupShowButton(show: Boolean) {
         (activity as MainActivity).apply {
-            if (sdkInitModel != null) {
-                sdkInitModel.showEnabled.value = show
-            }
+            sdkInitModel.showEnabled.value = show
         }
     }
 

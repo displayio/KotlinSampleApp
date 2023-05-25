@@ -61,7 +61,7 @@ class InfeedRVAdapter(
                     infeedPlacement.getInfeedContainer(Controller.getInstance().context, requestId)
                 infeedContainer.bindTo(holder.itemView as RelativeLayout)
             } catch (e: DioSdkException) {
-                Log.e(TAG, e.localizedMessage)
+                e.localizedMessage?.let { Log.e(TAG, it) }
             }
         }
     }
