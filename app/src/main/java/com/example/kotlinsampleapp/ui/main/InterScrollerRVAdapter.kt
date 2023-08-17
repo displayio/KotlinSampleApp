@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brandio.ads.Controller
 import com.brandio.ads.InterscrollerPlacement
 import com.brandio.ads.containers.InterscrollerContainer
-import com.brandio.ads.exceptions.DioSdkException
 import com.example.kotlinsampleapp.R
 import kotlin.properties.Delegates
 
@@ -37,22 +36,12 @@ class InterScrollerRVAdapter(
     ): RecyclerView.ViewHolder {
 
         val context = parent.context.applicationContext
-        if (viewType == TYPE_AD) {
-            val adView: ViewGroup = InterscrollerContainer.getAdView(context)
-            val adHolder = AdHolder(adView)
-            adHolder.setParent(parent)
-            try {
-                val placement =
-                    Controller.getInstance().getPlacement(placementId) as InterscrollerPlacement
-                placement.parentRecyclerView = parent as RecyclerView
-            } catch (e: DioSdkException) {
-                e.printStackTrace()
-            }
-
-            return adHolder
+        var view: View = if (viewType == TYPE_AD) {
+            InterscrollerContainer.getAdView(context)
+        } else {
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.infeed_list_item, parent, false)
         }
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.infeed_list_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -65,14 +54,12 @@ class InterScrollerRVAdapter(
     }
 
     override fun onBindViewHolder(@NonNull holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder.itemViewType == TYPE_AD && holder is AdHolder) {
+        if (holder.itemViewType == TYPE_AD) {
             try {
                 val placement =
                     Controller.getInstance().getPlacement(placementId) as InterscrollerPlacement
                 val container =
                     placement.getContainer(Controller.getInstance().context, requestId, position)
-                container.setInterscrollerHeight(holder.parent.height - adjustmentHeight)
-//                container.setInterscrollerOffset(adjustmentHeight)
                 container.bindTo(holder.itemView as ViewGroup)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -82,14 +69,6 @@ class InterScrollerRVAdapter(
 
     override fun getItemCount(): Int {
         return items.size
-    }
-
-    internal class AdHolder(itemView: View?) :
-        RecyclerView.ViewHolder(itemView!!) {
-        lateinit var parent: ViewGroup
-        internal fun setParent(parent: ViewGroup) {
-            this.parent = parent
-        }
     }
 
     internal class ViewHolder(itemView: View?) :
