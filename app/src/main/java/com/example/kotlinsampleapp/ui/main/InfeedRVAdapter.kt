@@ -8,9 +8,9 @@ import android.widget.RelativeLayout
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.brandio.ads.Controller
-import com.brandio.ads.InfeedPlacement
-import com.brandio.ads.containers.InfeedAdContainer
+import com.brandio.ads.containers.InfeedContainer
 import com.brandio.ads.exceptions.DioSdkException
+import com.brandio.ads.placements.InfeedPlacement
 import com.example.kotlinsampleapp.R
 import kotlin.collections.ArrayList
 
@@ -33,7 +33,7 @@ class InfeedRVAdapter(
     override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val context = parent.context.applicationContext
         return when (viewType) {
-            TYPE_AD -> AdViewHolder(InfeedAdContainer.getAdView(context))
+            TYPE_AD -> AdViewHolder(InfeedContainer.getAdView(context))
             else -> {
                 val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.infeed_list_item, parent, false)
@@ -58,7 +58,7 @@ class InfeedRVAdapter(
                 infeedPlacement.isFullWidth = true
                 infeedPlacement.isFrameless = true
                 val infeedContainer =
-                    infeedPlacement.getInfeedContainer(Controller.getInstance().context, requestId)
+                    infeedPlacement.getContainer(Controller.getInstance().context, requestId)
                 infeedContainer.bindTo(holder.itemView as RelativeLayout)
             } catch (e: DioSdkException) {
                 e.localizedMessage?.let { Log.e(TAG, it) }

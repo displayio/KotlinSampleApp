@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.brandio.ads.Controller
-import com.brandio.ads.InterscrollerPlacement
 import com.brandio.ads.containers.InterscrollerContainer
+import com.brandio.ads.placements.InterscrollerPlacement
 import com.example.kotlinsampleapp.R
 import kotlin.properties.Delegates
 
@@ -59,7 +59,7 @@ class InterScrollerRVAdapter(
                 val placement =
                     Controller.getInstance().getPlacement(placementId) as InterscrollerPlacement
                 val container =
-                    placement.getContainer(Controller.getInstance().context, requestId, position)
+                    placement.getContainer(Controller.getInstance().context, requestId)
                 container.bindTo(holder.itemView as ViewGroup)
             } catch (e: Exception) {
                 e.printStackTrace()

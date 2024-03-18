@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.brandio.ads.Controller
-import com.brandio.ads.HeadlinePlacement
-import com.brandio.ads.containers.HeadlineAdContainer
+import com.brandio.ads.containers.HeadlineContainer
+
 import com.brandio.ads.exceptions.DioSdkException
 import com.brandio.ads.listeners.HeadlineSnapListener
+import com.brandio.ads.placements.HeadlinePlacement
 import com.example.kotlinsampleapp.R
 
 
@@ -36,7 +37,7 @@ class HeadlineRVAdapter(
         context = parent.context.applicationContext
         return when (viewType) {
             TYPE_AD -> AdViewHolder(
-                HeadlineAdContainer.getAdView(context)
+                HeadlineContainer.getAdView(context)
             )
             else -> {
                 val view: View = LayoutInflater.from(parent.context)
@@ -60,7 +61,7 @@ class HeadlineRVAdapter(
                 val headlinePlacement = Controller.getInstance()
                     .getPlacement(placementId) as HeadlinePlacement
                 val container =
-                    headlinePlacement.getHeadLineContainer(context, requestId)
+                    headlinePlacement.getContainer(context, requestId)
                 container.bindTo(holder.itemView as ViewGroup)
             } catch (e: DioSdkException) {
                 Log.e(

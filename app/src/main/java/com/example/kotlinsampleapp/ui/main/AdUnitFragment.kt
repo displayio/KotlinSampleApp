@@ -18,8 +18,10 @@ import com.brandio.ads.ads.Ad
 import com.brandio.ads.exceptions.DIOError
 import com.brandio.ads.exceptions.DioSdkException
 import com.brandio.ads.listeners.AdEventListener
-import com.brandio.ads.listeners.AdLoadListener
 import com.brandio.ads.listeners.AdRequestListener
+import com.brandio.ads.placements.BannerPlacement
+import com.brandio.ads.placements.MediumRectanglePlacement
+import com.brandio.ads.placements.Placement
 import com.example.kotlinsampleapp.AdUnitType
 import com.example.kotlinsampleapp.MainActivity
 import com.example.kotlinsampleapp.MainActivity.Companion.AD_UNIT_NAME
@@ -103,33 +105,24 @@ class AdUnitFragment : Fragment() {
         val adRequest = placement.newAdRequest()
 
         adRequest.setAdRequestListener(object : AdRequestListener {
-            override fun onAdReceived(adProvider: AdProvider) {
-                adProvider.setAdLoadListener(object : AdLoadListener {
-                    override fun onLoaded(ad: Ad) {
-                        loadedAd = ad
-                        requestId = adRequest.id
-                        setupShowButton(true)
-                    }
-
-                    override fun onFailedToLoad(error: DIOError) {
-                        Toast.makeText(
-                            activity,
-                            "Ad for placement $placementId failed to load",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                })
-                try {
-                    adProvider.loadAd()
-                } catch (e: DioSdkException) {
-                    Log.e(adUnitName, " ${e.localizedMessage}")
-                }
+            override fun onAdReceived(ad: Ad) {
+                loadedAd = ad
+                requestId = adRequest.id
+                setupShowButton(true)
             }
 
             override fun onNoAds(error: DIOError) {
                 Toast.makeText(
                     activity,
                     "No Ads placement $placementId",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+            override fun onFailedToLoad(p0: DIOError?) {
+                Toast.makeText(
+                    activity,
+                    "Ad for placement $placementId failed to load",
                     Toast.LENGTH_LONG
                 ).show()
             }

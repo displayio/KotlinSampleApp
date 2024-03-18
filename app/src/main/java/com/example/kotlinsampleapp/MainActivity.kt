@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         if (!Controller.getInstance().isInitialized) {
             Controller.getInstance().init(
                 this,
-                null,
                 APP_ID,
                 object : SdkInitListener {
                     override fun onInit() {
